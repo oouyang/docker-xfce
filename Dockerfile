@@ -1,6 +1,10 @@
 FROM alpine
 MAINTAINER Owen Ouyang<owen.ouyang@live.com>
 
+ENV JAVA_HOME /usr/lib/jvm/java-1.7-openjdk
+ENV MAVEN_HOME /usr/share/java/maven-3
+ENV PATH /usr/lib/jvm/java-1.7-openjdk/bin:$PATH
+
 ADD pom.xml /root/pom.xml
 RUN apk --update --no-cache add htop tmux wget unzip openssh-client openjdk7 git nodejs maven alpine-desktop xfce4 \
         && wget -P /tmp https://download-cf.jetbrains.com/idea/ideaIC-2017.1-no-jdk.tar.gz \
