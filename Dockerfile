@@ -20,7 +20,7 @@ RUN apk --update --no-cache add htop tmux wget unzip openssh-client openjdk8 git
         && mvn initialize \
         && npm install -g appium \
         && npm install wd \
-        && rm -f /tmp/npm* /tmp/*z /tmp/*bin /tmp/*zip
+        && rm -rf /tmp/npm* /tmp/*z /tmp/*bin /tmp/*zip
 
 ADD .config /root/.config
 
