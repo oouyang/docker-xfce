@@ -18,7 +18,9 @@ RUN apk --update --no-cache add htop tmux wget unzip openssh-client openjdk7 git
         && ln -s /opt/idea-IC-171.3780.107/bin/idea.sh /usr/bin/idea \
         && cd /root \
         && mvn initialize \
-        && rm -f /tmp/*z /tmp/*bin /tmp/*zip
+        && npm install -g appium \
+        && npm install wd \
+        && rm -f /tmp/npm* /tmp/*z /tmp/*bin /tmp/*zip
 
 ADD .config /root/.config
 
