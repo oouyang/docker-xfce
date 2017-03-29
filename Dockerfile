@@ -8,12 +8,12 @@ RUN apk --update --no-cache add htop tmux wget unzip openssh-client openjdk7 git
         && wget -P /tmp https://plugins.jetbrains.com/files/9164/30758/gherkin.zip \
         && mkdir /opt /root/.IdeaIC2017.1/config/plugins/ \
         && tar xvfz /tmp/ideaIC-2017.1-no-jdk.tar.gz -C /opt \
-        && unzip -d /root/.IdeaIC2017.1/config/plugins cucumber-java.zip \
-        && unzip -d /root/.IdeaIC2017.1/config/plugins gherkin.zip \
+        && unzip -d /root/.IdeaIC2017.1/config/plugins /tmp/cucumber-java.zip \
+        && unzip -d /root/.IdeaIC2017.1/config/plugins /tmp/gherkin.zip \
         && ln -s /opt/idea-IC-171.3780.107/bin/idea.sh /usr/bin/idea \
         && cd /root \
         && mvn initialize \
-        && rm -f /tmp/*z /tmp/*bin *zip
+        && rm -f /tmp/*z /tmp/*bin /tmp/*zip
 
 ADD .config /root/.config
 
