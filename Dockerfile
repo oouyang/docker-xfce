@@ -16,7 +16,7 @@ RUN apk --update --no-cache add htop tmux wget unzip openssh-client openjdk8 git
         && wget -P /tmp https://plugins.jetbrains.com/files/9164/30758/gherkin.zip \
         && mkdir /opt \
         && mkdir -p /root/.IdeaIC2017.1/config/plugins/ \
-        && mkdir -m 0750 /root/.android \
+        && mkdir -p -m 0750 /root/.android \
         && tar xvfz /tmp/ideaIC-2017.1-no-jdk.tar.gz -C /opt \
         && unzip -d /root/.IdeaIC2017.1/config/plugins /tmp/cucumber-java.zip \
         && unzip -d /root/.IdeaIC2017.1/config/plugins /tmp/gherkin.zip \
