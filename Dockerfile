@@ -1,8 +1,9 @@
 FROM alpine
 MAINTAINER Owen Ouyang<owen.ouyang@live.com>
 
-ENV JAVA_HOME /usr/lib/jvm/java-1.8-openjdk
-ENV MAVEN_HOME /usr/share/java/maven-3
+ENV JAVA_HOME /usr/lib/jvm/java-1.8-openjdk \
+ MAVEN_HOME /usr/share/java/maven-3 \
+ PATH /usr/lib/jvm/java-1.8-openjdk/bin:$PATH
 
 ADD pom.xml /root/pom.xml
 RUN apk --update --no-cache add htop tmux wget unzip openssh-client openjdk8 git nodejs maven alpine-desktop xfce4 \
