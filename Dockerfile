@@ -20,6 +20,11 @@ RUN apk --update --no-cache add htop tmux wget unzip openssh-client openjdk8 git
         && mvn initialize \
         && npm install -g appium \
         && npm install wd \
+        && wget -O "/tmp/glibc.apk" \
+           "https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.23-r3/glibc-2.23-r3.apk" && \
+           wget -O "/tmp/glibc-bin.apk" \
+           "https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.23-r3/glibc-bin-2.23-r3.apk" && \
+           apk add "/tmp/glibc.apk" "/tmp/glibc-bin.apk" \
         && rm -rf /tmp/npm* /tmp/*z /tmp/*bin /tmp/*zip
 
 ADD .config /root/.config
