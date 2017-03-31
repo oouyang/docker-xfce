@@ -27,6 +27,7 @@ RUN dpkg --add-architecture i386 && apt-get update && apt-get install -y wget bz
                                          libxcomposite-dev libxslt1.1 default-jdk openssh-client \
                                          maven git android-tools-adb android-tools-fastboot \
                                          libc6:i386 libncurses5:i386 libstdc++6:i386 lib32z1 \
+                                         unzip \
     && echo deb http://download.virtualbox.org/virtualbox/debian xenial contrib >> /etc/apt/sources.list.d/virtualbox.list \
     && wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | apt-key add - \
     && wget -P /tmp https://dl.genymotion.com/releases/genymotion-2.8.1/genymotion-2.8.1_x64.bin \
