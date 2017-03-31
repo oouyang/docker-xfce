@@ -64,7 +64,7 @@ RUN dpkg --add-architecture i386 && apt-get update && apt-get install -y wget bz
     && wget -P /tmp https://download-cf.jetbrains.com/idea/ideaIU-2017.1.tar.gz \
     && tar xvfz /tmp/ideaIU-2017.1.tar.gz -C /opt \
     && ln -s /opt/idea-IU-171.3780.107/bin/idea.sh /usr/bin/idea \
-    && mvn clean initialize \
+    && cd /root && mvn clean initialize \
     && wget -P /tmp ${ANDROID_SDK_URL} \
     && tar xvfz /tmp/${ANDROID_SDK_FILENAME} -C /opt \
     && echo y | android update sdk --no-ui -a --filter tools,platform-tools,${ANDROID_API_LEVELS},build-tools-${ANDROID_BUILD_TOOLS_VERSION},extra-android-m2repository,extra-android-support \
