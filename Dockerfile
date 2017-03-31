@@ -4,12 +4,15 @@ ENV DEBIAN_FRONTEND noninteractive
 ENV NPM_CONFIG_LOGLEVEL info
 ENV NODE_VERSION 7.7.4
 ENV YARN_VERSION 0.21.3
+ENV GRADLE_VERSION=3.4.1
 ENV ANDROID_SDK_VERSION r24.4.1
 ENV ANDROID_BUILD_TOOLS_VERSION 23.0.2
 ENV ANDROID_SDK_FILENAME android-sdk_${ANDROID_SDK_VERSION}-linux.tgz
 ENV ANDROID_SDK_URL http://dl.google.com/android/${ANDROID_SDK_FILENAME}
 ENV ANDROID_API_LEVELS android-15,android-16,android-17,android-18,android-19,android-20,android-21,android-22,android-23
+ENV GRADLE_FOLDER=/root/.gradle
 
+ENV GRADLE_HOME=/opt/gradle
 ENV JAVA_HOME  /usr/lib/jvm/java-8-openjdk-amd64
 ENV MAVEN_HOME /usr/share/maven
 ENV ANDROID_HOME /opt/android-sdk-linux
@@ -60,7 +63,7 @@ RUN dpkg --add-architecture i386 && apt-get update && apt-get install -y wget bz
     && chmod +x /usr/local/bin/yarn \
     && npm install -g appium appium-doctor \
     && npm install wd \
-    && mkdir -p /root/.Genymobile/Genymotion \
+    && mkdir -p /root/.Genymobile/Genymotion /root/.gradle \
     && wget -P /tmp https://download-cf.jetbrains.com/idea/ideaIU-2017.1.tar.gz \
     && tar xvfz /tmp/ideaIU-2017.1.tar.gz -C /opt \
     && ln -s /opt/idea-IU-171.3780.107/bin/idea.sh /usr/bin/idea \
@@ -68,9 +71,18 @@ RUN dpkg --add-architecture i386 && apt-get update && apt-get install -y wget bz
     && wget -P /tmp ${ANDROID_SDK_URL} \
     && tar xvfz /tmp/${ANDROID_SDK_FILENAME} -C /opt \
     && echo y | android update sdk --no-ui -a --filter tools,platform-tools,${ANDROID_API_LEVELS},build-tools-${ANDROID_BUILD_TOOLS_VERSION},extra-android-m2repository,extra-android-support \
+    && wget -P /tmp --no-check-certificate --no-cookies https://downloads.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip \
+    && unzip /tmp/gradle-${GRADLE_VERSION}-bin.zip -d /opt \
+    && ln -s /opt/gradle-${GRADLE_VERSION} /opt/gradle \
+    && update-alternatives --install "/usr/bin/gradle" "gradle" "/opt/gradle/bin/gradle" 1 \
+    && update-alternatives --set "gradle" "/opt/gradle/bin/gradle" \
     && apt-get autoremove -y \
     && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* /tmp/*z /tmp/*npm*
+    && mvn -version \
+    && npm -version \
+    && node --version \
+    && gradle -version \
+    && rm -rf /var/lib/apt/lists/* /tmp/*z /tmp/*npm* /tmp/*zip*
 
 ADD .config /root/.config
 
