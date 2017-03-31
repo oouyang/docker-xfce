@@ -1,17 +1,29 @@
 
 from ubuntu:16.04
 ENV DEBIAN_FRONTEND noninteractive
-ENV JAVA_HOME  /usr/lib/jvm/java-8-openjdk-amd64
-ENV MAVEN_HOME /usr/share/maven
 ENV NPM_CONFIG_LOGLEVEL info
 ENV NODE_VERSION 7.7.4
 ENV YARN_VERSION 0.21.3
+ENV ANDROID_SDK_VERSION r24.4.1
+ENV ANDROID_BUILD_TOOLS_VERSION 23.0.2
+ENV ANDROID_SDK_FILENAME android-sdk_${ANDROID_SDK_VERSION}-linux.tgz
+ENV ANDROID_SDK_URL http://dl.google.com/android/${ANDROID_SDK_FILENAME}
+ENV ANDROID_API_LEVELS android-15,android-16,android-17,android-18,android-19,android-20,android-21,android-22,android-23
+
+ENV JAVA_HOME  /usr/lib/jvm/java-8-openjdk-amd64
+ENV MAVEN_HOME /usr/share/maven
+ENV ANDROID_HOME /opt/android-sdk-linux
+ENV PATH ${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
+
 
 ADD pom.xml /root/pom.xml
-RUN apt-get update && apt-get install -y wget bzip2 linux-headers-4.4.0-22-generic dkms xfce4 \
+ADD files/IntelliJIDEALicenseServer_linux_amd64 /root/bin/IntelliJIDEALicenseServer_linux_amd64
+ADD files/startup.sh /root/bin/startup.sh
+RUN dpkg --add-architecture i386 && apt-get update && apt-get install -y wget bzip2 linux-headers-4.4.0-22-generic dkms xfce4 \
                                          vnc4server openssl libgstreamer-plugins-base0.10-dev \
                                          libxcomposite-dev libxslt1.1 default-jdk openssh-client \
                                          maven git android-tools-adb android-tools-fastboot \
+                                         libc6:i386 libncurses5:i386 libstdc++6:i386 lib32z1 \
     && echo deb http://download.virtualbox.org/virtualbox/debian xenial contrib >> /etc/apt/sources.list.d/virtualbox.list \
     && wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | apt-key add - \
     && wget -P /tmp https://dl.genymotion.com/releases/genymotion-2.8.1/genymotion-2.8.1_x64.bin \
@@ -53,7 +65,12 @@ RUN apt-get update && apt-get install -y wget bzip2 linux-headers-4.4.0-22-gener
     && tar xvfz /tmp/ideaIU-2017.1.tar.gz -C /opt \
     && ln -s /opt/idea-IU-171.3780.107/bin/idea.sh /usr/bin/idea \
     && mvn clean initialize \
-    && rm -rf /var/lib/apt/lists/* /tmp/*z
+    && wget -P /tmp ${ANDROID_SDK_URL} \
+    && tar xvfz /tmp/${ANDROID_SDK_FILENAME} -C /opt \
+    && echo y | android update sdk --no-ui -a --filter tools,platform-tools,${ANDROID_API_LEVELS},build-tools-${ANDROID_BUILD_TOOLS_VERSION},extra-android-m2repository,extra-android-support \
+    && apt-get autoremove -y \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* /tmp/*z /tmp/*npm*
 
 ADD .config /root/.config
 
